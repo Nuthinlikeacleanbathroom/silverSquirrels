@@ -206,7 +206,19 @@ module.exports = {
     }
   },
   
-  updateLocation: function (req, res, next) {
-    
+  updateLocation: function (data) {
+    User.findOne({username: data.user})
+      .then(function(results) {
+        results.location.lat = data.location.lat;
+        results.location.long = data.location.long;
+        
+        results.save()
+          .catch(function errHandler (err) {
+            console.log('There was an error saving the new location.', err);
+          });
+      })
+      .catch(function errHandler (err) {
+        console.log('There was an error querying the database:', err);
+      });
   }
 };
