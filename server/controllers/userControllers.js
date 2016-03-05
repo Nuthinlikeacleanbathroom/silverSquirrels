@@ -204,13 +204,44 @@ module.exports = {
       });
     }
   },
-  
+
+  getFriends: function(req, res, next) {
+    var token = req.headers['x-access-token'];
+    if(!token) {
+      next(new Error('No token'));
+    } else {
+      var user = jwt.decode(token, 'superskrull');
+      User.findOne({ username: user.username })
+      .populate('friends', 'username haveDone wantToDo')
+      .exec(function(err, foundUser) {
+        if(err){
+          next(new Error('Failed to find user!'));
+        }
+        res.json({
+          friends: foundUser.friends
+        });
+      });
+    }
+  },
+
   updateLocation: function (data) {
     User.findOne({username: data.user})
       .then(function(results) {
         results.location.lat = data.location.lat;
         results.location.long = data.location.long;
         
+        if (!results.trail.length) {
+          results.trail.push(results.location);
+        }
+        
+        var last = results.trail[results.trail.length - 1];
+        
+        var distance = Math.sqrt(Math.pow((last.lat - data.location.lat), 2) 
+          + Math.pow((last.long - data.location.long), 2));
+        
+        if (distance > .0001) {
+          results.trail.push(results.location);
+        }
         results.save()
           .catch(function errHandler (err) {
             console.log('There was an error saving the new location.', err);
@@ -237,5 +268,5 @@ module.exports = {
         });
       });
     }
-  },
+  }
 };
