@@ -205,7 +205,6 @@ module.exports = {
     }
   },
   
-<<<<<<< b56c1910746fa22007bceab569c21f6b33046c6e
   updateLocation: function (data) {
     User.findOne({username: data.user})
       .then(function(results) {
@@ -220,10 +219,7 @@ module.exports = {
       .catch(function errHandler (err) {
         console.log('There was an error querying the database:', err);
       });
-||||||| merged common ancestors
-  updateLocation: function (req, res, next) {
-    
-=======
+
   getFriends: function(req, res, next) {
     var token = req.headers['x-access-token'];
     if(!token) {
@@ -242,9 +238,4 @@ module.exports = {
       });
     }
   },
-
-  updateLocation: function (req, res, next) {
-    
->>>>>>> added endpoint to get all friends
-  }
 };
