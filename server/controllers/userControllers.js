@@ -250,23 +250,5 @@ module.exports = {
       .catch(function errHandler (err) {
         console.log('There was an error querying the database:', err);
       });
-
-  getFriends: function(req, res, next) {
-    var token = req.headers['x-access-token'];
-    if(!token) {
-      next(new Error('No token'));
-    } else {
-      var user = jwt.decode(token, 'superskrull');
-      User.findOne({ username: user.username })
-      .populate('friends', 'username haveDone wantToDo')
-      .exec(function(err, foundUser) {
-        if(err){
-          next(new Error('Failed to find user!'));
-        }
-        res.json({
-          friends: foundUser.friends
-        });
-      });
-    }
   }
 };
