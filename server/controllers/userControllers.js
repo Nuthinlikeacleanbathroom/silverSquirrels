@@ -212,6 +212,18 @@ module.exports = {
         results.location.lat = data.location.lat;
         results.location.long = data.location.long;
         
+        if (!results.trail.length) {
+          results.trail.push(results.location);
+        }
+        
+        var last = results.trail[results.trail.length - 1];
+        
+        var distance = Math.sqrt(Math.pow((last.lat - data.location.lat), 2) 
+          + Math.pow((last.long - data.location.long), 2));
+        
+        if (distance > .0001) {
+          results.trail.push(results.location);
+        }
         results.save()
           .catch(function errHandler (err) {
             console.log('There was an error saving the new location.', err);
