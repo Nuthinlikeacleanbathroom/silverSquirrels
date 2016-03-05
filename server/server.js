@@ -1,17 +1,3 @@
- // Cody recommended doing this
-// Makes it so the .env file is read locally to get API key
-// but on heroku if the NODE_ENV config var is set to production, app will look there
-
-/// This is how to access the api key:
-/// process.env.TRAIL_API_KEY
-
-/// You will need to make a .env file with a TrailAPI key
-/// (the .env files just needs one line: TRAIL_API_KEY: your_key_here)
-/// the 'dotenv' module loads it from there, unless you are on Heroku, where you set it to an environment variable and set NODE_ENV to be 'production'
-if(process.env.NODE_ENV !== 'production'){
-  require('dotenv').config();
-}
-
 var express = require('express');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
@@ -20,6 +6,26 @@ var userControllers = require('./controllers/userControllers.js');
 var trailController = require('./controllers/TrailController.js');
 var geocodeController = require('./controllers/GeocodeController.js');
 
+<<<<<<< e02bf63b73b664e94dd5a11f36b91f70c90428fd
+<<<<<<< 70827d8f7028189df73e8dc3bfdacbbe4d99c1a1
+if (process.env.NODE_ENV !== 'production'){
+  require('dotenv').config();
+}
+
+||||||| merged common ancestors
+=======
+if(process.env.NODE_ENV !== 'production'){
+  require('dotenv').config();
+}
+
+>>>>>>> (clean)Removed comments regarding dotenv
+||||||| merged common ancestors
+=======
+if(process.env.NODE_ENV !== 'production'){
+  require('dotenv').config();
+}
+
+>>>>>>> added endpoint to get all friends
 var app = express();
 
 // create and connect to database
@@ -83,9 +89,15 @@ io.on('connection', function(socket){
   console.log('*** Client has Connected');  
   
   socket.on('coords', function syncCoords(data) {
-    // console.log(data);
-    // socket.emit('coords', data);
     userLocs(data);
+    console.log(data);
+    socket.emit('coords', data);
+
+    require('./controllers/userControllers.js').updateLocation(data);
+    console.log(data);
+    socket.emit('coords', data);
+
+    require('./controllers/userControllers.js').updateLocation(data);
   });
   
   socket.on('disconnect', function(){
