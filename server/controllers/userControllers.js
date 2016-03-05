@@ -205,7 +205,6 @@ module.exports = {
     }
   },
   
-<<<<<<< HEAD
   getFriends: function(req, res, next) {
     var token = req.headers['x-access-token'];
     if(!token) {
