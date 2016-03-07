@@ -176,14 +176,27 @@ module.exports = {
           if (err) {
             next(new Error('There was an error finding or creating trail to update:', err));
             res.sendStatus(500);
+          
           }
-          foundUser.update('trails._id': trail._id, 
-              {$set: { 
-              'trails.$.name': trailData.name,
-              'trails.$.'
+          if (created) {
+            foundUser.trails.push({
+              _id: trail._id,
+              done: trailData.done
+            });
+            var trailIdx = foundUsers.trails.length - 1;
+          }
+          if (!trailIdx) {
+            for (var i = 0; i < foundUser.trails.length; i++) {
+              if (foundUser.trails[i]._id + '' === trail._id + '') {
+                trailIdx = i;
+                break;
+              }
             }
-          });
-          console.log(foundUser.trails)
+          }
+          foundUser.trails[trailIdx].done = trailData.done;
+          
+          foundUser.save();
+          
           res.sendStatus(202);
         })
       })
