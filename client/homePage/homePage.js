@@ -8,14 +8,14 @@ angular.module('hikexpert.home', [])
     // $scope.getting_markers = false;
     $scope.markers = [];
     // $scope.hikerStatus = 'City-Dweller';
-    
+
     Map.updateUserLocation(function locationUpdated () {
       $scope.loading = false;
       $scope.$apply();
       Map.createMap($scope, $rootScope.userInfo.location, Map.placeUserMarker);
     });
     $scope.comments;
-    
+
     $scope.getTrailsNearUser = function(location){
       Map.getTrailsNearUser(location, $scope);
     };
@@ -23,7 +23,7 @@ angular.module('hikexpert.home', [])
     $scope.getTrailsNearLocation = function(searchData) {
       Map.getTrailsNearLocation(searchData, $scope);
     };
-    
+
     $scope.goToTrail = function(trail) {
       var hasDone = $rootScope.userInfo.trails.reduce(function(memo, rootTrail) {
         if (trail.name === rootTrail.name) {
