@@ -88,7 +88,8 @@ angular.module('hikexpert', [
             currentTrail: {
               location: user.location,
               name: 'New Trail',
-              path: []
+              path: [],
+              done: false
             }
           };
         })
