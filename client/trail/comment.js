@@ -1,6 +1,6 @@
 angular.module('hikexpert.comment', [])
   .controller('CommentFormController', function($scope, Home){
-    $scope.submitComment = function(new-comment){
-      console.log(new-comment);
+    $scope.submitComment = function(newComment){
+      console.log(newComment);
     }
   }

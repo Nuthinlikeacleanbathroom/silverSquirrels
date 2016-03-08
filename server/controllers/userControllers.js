@@ -8,7 +8,7 @@ module.exports = {
     var username = req.body.username;
     var password = req.body.password;
     var findUser = Q.nbind(User.findOne, User);
-    
+
     findUser({username: username})
       .then(function(user) {
         if(!user) {
@@ -29,15 +29,15 @@ module.exports = {
         next(error);
       });
   },
-  
+
   signup: function(req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
     var create;
     var newUser;
-    
+
     var findOne = Q.nbind(User.findOne, User);
-    
+
     // check to see if user already exists
     findOne({username: username})
       .then(function(user) {
@@ -98,7 +98,7 @@ module.exports = {
       // decode token
       var user = jwt.decode(token, 'superskrull');
     // check if user is in database
-    
+
     var findUser = Q.nbind(User.findOne, User);
     findUser({username: user.username})
       .then(function(foundUser) {
@@ -131,7 +131,7 @@ module.exports = {
       });
     }
   },
-  
+
   addTrailToUserTrails: function(req, res, next) {
     var token = req.headers['x-access-token'];
     if (!token) {
@@ -171,7 +171,7 @@ module.exports = {
         }
       })
   },
-  
+
   updateUserTrail: function(req, res, next) {
     var token = req.headers['x-access-token'];
     if (!token) {
@@ -189,7 +189,7 @@ module.exports = {
           if (err) {
             next(new Error('There was an error finding or creating trail to update:', err));
             res.sendStatus(500);
-          
+
           }
           if (created) {
             foundUser.trails.push({
@@ -208,9 +208,9 @@ module.exports = {
             }
           }
           foundUser.trails[trailIdx].done = trailData.done;
-          
+
           foundUser.save();
-          
+
           res.sendStatus(202);
         })
       })
@@ -245,7 +245,7 @@ module.exports = {
       });
     }
   },
-  
+
   getFriends: function(req, res, next) {
     var token = req.headers['x-access-token'];
     if(!token) {
@@ -270,17 +270,17 @@ module.exports = {
       .then(function(results) {
         results.location.lat = data.location.lat;
         results.location.long = data.location.long;
-        
+
         if (!results.path.length) {
           results.path.push(results.location);
         }
-        
+
         // Trail.findOne({name: data.name})
         var last = results.path[results.path.length - 1];
-        
-        var distance = Math.sqrt(Math.pow((last.lat - data.location.lat), 2) 
+
+        var distance = Math.sqrt(Math.pow((last.lat - data.location.lat), 2)
           + Math.pow((last.long - data.location.long), 2));
-        
+
         if (distance > .0001) {
           results.path.addToSet(results.location);
         }
