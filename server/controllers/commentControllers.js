@@ -12,8 +12,10 @@ module.exports = {
       trail : req.body.trail,
       distance : req.body.distance,
       time : req.body.time,
-      rating : req.body.rating
+      rating : req.body.rating,
+      difficulty: req.body.difficulty
     }
+    console.log("submitting");
 
     Comment.create(options, function(err, result){
       if (err){

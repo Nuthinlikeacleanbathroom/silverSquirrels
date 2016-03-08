@@ -5,27 +5,29 @@
   </div>
   <div class="row-well">
     <div class="col-sm-6" ng-if="exists == true">
-      <h3 class="form-control">Rating</h3>
-      <h3 class="form-control">Comments</h3>
-        "<form class='comment-form'> \
-          <textarea ng-model='new-comment.text' class='comment-text' placeholder='Comments'></textarea>\
-          <br />Rating\
-          <select ng-model='new-comment.rating' class='rating'>\
-            <option value=1''>1</option>\
-            <option value='2'>2</option>\
-            <option value='3'>3</option>\
-            <option value='4'>4</option>\
-          </select>\
-          Difficulty:\
-          <select ng-model='new-comment.difficulty' class='difficulty'>\
-            <option value='1'>1</option>\
-            <option value='2'>2</option>\
-            <option value='3'>3</option>\
-            <option value='4'>4</option>\
-          </select>\
-          <br />Hours to hike<input ng-model='new-comment.time' type=number class='time'></number><br />\
-          <button ng-click='submitComment(new-comment)' type='button' class=comment-button>click</button>\
-        </form>";
+        <p class=rating-disp>Rating: {{trail.rating }}</p>
+        <p class=difficulty-disp>Difficulty: {{trail.difficulty}}</p>
+        <p class=time-disp>Time: {{trail.time}}</p>
+
+        <form controller='CommentFormController' class='comment-form'>
+          <textarea ng-model='newComment.text' class='comment-text' placeholder='Comments'></textarea>
+          <p> Rating:</p>
+          <select ng-model='newComment.rating' class='rating'>
+            <option value='1'>1</option>
+            <option value='2'>2</option>
+            <option value='3'>3</option>
+            <option value='4'>4</option>
+          </select>
+          Difficulty:
+          <select ng-model='newComment.difficulty' class='difficulty'>
+            <option value='1'>1</option>
+            <option value='2'>2</option>
+            <option value='3'>3</option>
+            <option value='4'>4</option>
+          </select>
+          <br />Hours to hike<input ng-model='newComment.time' type=number class='time'></number><br />
+          <button ng-click='submitComment(newComment)' type='button' class="btn-success form-control">Submit Comment</button>
+        </form>
       <button class="btn btn-success form-control" ng-click="saveTrail(userInfo.currentTrail)">Save this trail!</button>
       <button class="btn btn-success form-control" ng-click="haveDone(userInfo.currentTrail)">I have hiked this trail</button>
     </div>
@@ -39,5 +41,11 @@
     </form>
   </div>
 
+ <div class='comment-view' ng-repeat="comment in comments">
+   <p ng-if= 'comment.text' >Comment: {{comment.text}}</p>
+   <p ng-if= 'comment.rating'>Rating: {{comment.rating}}</p>
+   <p ng-if= 'comment.difficulty'>Difficulty: {{comment.difficulty}}</p>
+   <p ng-if= 'comment.time'>Time: {{comment.time}}</p>
+ </div>
   <div id="map"></div>
 </div>
