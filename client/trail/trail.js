@@ -34,7 +34,6 @@ angular.module('hikexpert.trail', [])
           }
       });
     }, 5000);
-<<<<<<< HEAD
 
     $scope.saveTrail = function(trail) {
       if (!$scope.userTrails[trail.name]) {
