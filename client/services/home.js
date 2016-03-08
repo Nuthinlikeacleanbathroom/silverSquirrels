@@ -7,6 +7,7 @@ angular.module('home.services', [])
         url: 'api/trails',
         data: userInfo
       }).then(function(res){
+        console.log(res.data);
         return res.data;
       })
       .catch(function(err) {
@@ -38,7 +39,7 @@ angular.module('home.services', [])
     };
 
     var commentPost = function(options){
-      console.log("comentPost");
+      console.log(options);
       return $http({
         method: 'POST',
         url : '/comment',
@@ -54,8 +55,8 @@ angular.module('home.services', [])
         method: 'GET',
         url : '/comments?trail=' + uriComponent
       }).then(function(res){
+        console.log(res.data);
         return(res.data);
-
       });
     }
 

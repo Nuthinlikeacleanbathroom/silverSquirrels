@@ -1,5 +1,5 @@
 angular.module('hikexpert.trail', [])
-  .controller('TrailController', function($rootScope, $scope, Map, Socket, Home, Trail) {
+  .controller('TrailController', function($rootScope, $scope, Map, Socket, Home) {
     $scope.exists = true;
     $scope.markers = [];
     $scope.userTrails = $rootScope.userInfo.trails.reduce(function(memo, trail) {
@@ -14,9 +14,9 @@ angular.module('hikexpert.trail', [])
         return memo;
       }
     }, {});
-    $scope.saved = !!$scope.userTrails[$rootScope.userInfo.currentTrail.name] 
+    $scope.saved = !!$scope.userTrails[$rootScope.userInfo.currentTrail.name]
       || false;
-    
+
     Map.createMap($scope, $rootScope.userInfo.currentTrail.location, function(map) {
       if ($rootScope.userInfo.currentTrail.name === 'New Trail') {
         Map.placeUserMarker(map);
@@ -25,7 +25,7 @@ angular.module('hikexpert.trail', [])
         Map.placeTrailMarker($scope, curr, curr.done ? 'yellowIcon' : 'greenIcon');
       }
     });
-    
+
     $scope.updateInterval = setInterval(function (){
       Map.updateUserLocation(function sync () {
         Socket.emit('coords', {user: $rootScope.userInfo.username, location: $rootScope.userInfo.location});
@@ -34,7 +34,7 @@ angular.module('hikexpert.trail', [])
           }
       });
     }, 5000);
-    
+
     $scope.saveTrail = function(trail) {
       if (!$scope.userTrails[trail.name]) {
         addTrailToUserTrails(trail);
@@ -71,12 +71,22 @@ angular.module('hikexpert.trail', [])
           })
       }
     };
-    
+
     var addTrailToUserTrails = function(trail) {
       $scope.userTrails[trail.name] = trail;
       $scope.userTrails[trail.name].done = false;
     };
-    
+
+    $scope.newComment = {};
+    $scope.newComment.trail = $scope.userInfo.currentTrail.name;
+    $scope.submitComment= Home.commentPost;
+
+    Home.getComments($scope.userInfo.currentTrail.name).then(function(result){
+      $scope.comments = result;
+    });
+
+
+
     $scope.createTrail = function(trail) {
       if (!trail) {
         $scope.exists = false;
@@ -91,29 +101,4 @@ angular.module('hikexpert.trail', [])
       };
       $rootScope.userInfo.currentTrail = trail;
     };
-    
-    // var polyFriendsConfig = { color: 'blue', weight: 6, opacity: 0.9 };
-    // var polyUserConfig = { color: 'red', weight: 6, opacity: 0.9 };
-    // var userLocs = {}
-    // Socket.on('coordsResp', function(data){
-    //   for(var user in data){
-    //     if( !userLocs[user] ){
-    //       userLocs[user] = [];
-    //     }else{
-    //       var y = 0.0001; //mock
-    //       for(var i=0;i<data[user].length;i++){
-    //         if( user=='user' ){
-    //           var x = data[user][i][0] + y;
-    //           y=y-0.0001;
-    //           var pt = new L.LatLng(x ,data[user][i][1])
-    //         }else{
-    //           var pt = new L.LatLng(data[user][i][0],data[user][i][1])
-    //         }
-    //         userLocs[user].push(pt)
-    //       }
-    //     }
-    //     Map.renderPath(userLocs[user], polyUserConfig, $scope);
-    //   }
-    // })
   });
-  

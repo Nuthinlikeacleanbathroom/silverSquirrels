@@ -40,24 +40,24 @@ angular.module('map.services', [])
       <p class=difficulty-disp>Difficulty: " + trail.difficulty + "</p>\
       <p class=time-disp>Time: " + trail.time + "</p>";
     };
-    
+
     var getPopupHTML = function(trail) {
       return '<a ng-click="goToTrail(trail)">{{ trail.name }}</a>';
     }
-    
+
     var compileMarker = function(html, trail, $scope) {
       var linkFunction = $compile(angular.element(html));
       var newScope = $scope.$new();
       newScope.trail = trail;
       newScope.goToTrail = $scope.goToTrail;
-      
+
       return linkFunction(newScope)[0];
     }
 
     var markerCases = {
       true: function hasDone(trail, $scope) {
         var html = getPopupHTML(trail);
-        
+
         return L.marker(trail.coordinates, {icon: greenIcon, title: trail.name})
           .bindPopup(compileMarker(html, trail, $scope))
           .addTo($scope.map)
@@ -91,10 +91,10 @@ angular.module('map.services', [])
         accessToken: 'pk.eyJ1IjoiZWR1bGlzOCIsImEiOiJjaWt1M2RzeW8wMDk4dnltM3h5ZXlwb24wIn0.DfujBg6HeQHg5ja-tZyYRw'
       })
       .addTo(map);
-      
+
       callback(map);
     };
-    
+
     var placeUserMarker = function(map) {
       $rootScope.userInfo.marker = L.marker([$rootScope.userInfo.location.lat, $rootScope.userInfo.location.long], {icon: mapMarker, autoPan: false});
       $rootScope.userInfo.marker.addTo(map).bindPopup("Here you are")
@@ -183,7 +183,7 @@ angular.module('map.services', [])
           var seeCommentsHTML = "<a class=see-comments>See comments for this trail</a>"
           var commentFormHTML = "<form class=comment-form><span class=hidden>"+ trail.name + "</span><textarea class='comment-text' placeholder='Comments'></textarea><br />Rating<select class='rating'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select>  Difficulty:<select class='difficulty'><option value=1''>1</option><option value='2'>2</option><option value='3'>3</option><option value='4'>4</option></select><br />Hours to hike<input type=number class='time'></number><br /><button type='button' class=comment-button>click</button></form>";
           var statsDisplayHTML = "<p class=rating-disp>Rating: " + trail.rating + "</p> <p class=difficulty-disp>Difficulty: " + trail.difficulty + "</p> <p class=time-disp>Time: " + trail.time + "</p>" + seeCommentsHTML;
-          // TODO: fix or refactor markers 
+          // TODO: fix or refactor markers
           // var marker;
           // if ( $rootScope.userInfo.haveDone.indexOf(trail.name) > -1 ) {
           //   marker = L.marker(trail.coordinates, {icon: greenIcon, title: trail.name})
@@ -199,7 +199,7 @@ angular.module('map.services', [])
           // }
           $scope.markers.push(marker);
         }
-      });  
+      });
     };
 
     var changeColor = function (trailName, icon, intent) {
